@@ -1,12 +1,13 @@
 GIT
   remote: git://github.com/chef/omnibus-software.git
-  revision: 45fc26cf6b4692860bd44dc154c690e1e9265870
+  revision: 6c518e96af3b90a04c01c4f81f65d2f3cd42f2a9
   specs:
     omnibus-software (4.0.0)
 
 GIT
   remote: git://github.com/chef/omnibus.git
-  revision: 884a22a0d25edb9193947e411a0a9a4047e662d4
+  revision: 7ad445a955feb88888da02225b9c2f187bb42585
+  branch: ksubrama/gitcache
   specs:
     omnibus (5.0.0)
       aws-sdk (~> 2)
@@ -115,7 +116,7 @@ GEM
     nori (2.6.0)
     octokit (3.8.0)
       sawyer (~> 0.6.0, >= 0.5.3)
-    ohai (8.8.1)
+    ohai (8.9.0)
       chef-config (>= 12.5.0.alpha.1, < 13)
       ffi (~> 1.9)
       ffi-yajl (~> 2.2)
