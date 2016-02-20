@@ -307,10 +307,18 @@ class Chef
 
     # used by include_recipe to add recipes to the expanded run_list to be
     # saved back to the node and be searchable
-    def loaded_recipe(cookbook, recipe)
+    def loaded_recipe(cookbook, recipe, current_recipe: nil)
       fully_qualified_recipe = "#{cookbook}::#{recipe}"
 
       automatic_attrs[:recipes] << fully_qualified_recipe unless Array(self[:recipes]).include?(fully_qualified_recipe)
+
+      if current_recipe
+        if automatic_attrs[:recipe_include_history].has_key?(current_recipe)
+          automatic_attrs[:recipe_include_history][current_recipe] << fully_qualified_recipe
+        else
+          automatic_attrs[:recipe_include_history][current_recipe] = [fully_qualified_recipe]
+        end
+      end
     end
 
     # Returns true if this Node expects a given role, false if not.
@@ -358,6 +366,8 @@ class Chef
       Chef::Log.debug("Platform is #{platform} version #{version}")
       self.automatic[:platform] = platform
       self.automatic[:platform_version] = version
+
+      self.automatic[:recipe_include_history] = {}
     end
 
     # Consumes the combined run_list and other attributes in +attrs+

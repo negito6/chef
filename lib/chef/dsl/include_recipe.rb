@@ -23,7 +23,7 @@ class Chef
     module IncludeRecipe
 
       def include_recipe(*recipe_names)
-        run_context.include_recipe(*recipe_names, current_cookbook: cookbook_name)
+        run_context.include_recipe(*recipe_names, current_cookbook: cookbook_name, current_recipe: recipe_name)
       end
 
       def load_recipe(recipe_name)

@@ -282,10 +282,10 @@ class Chef
     #
     # @see DSL::IncludeRecipe#include_recipe
     #
-    def include_recipe(*recipe_names, current_cookbook: nil)
+    def include_recipe(*recipe_names, current_cookbook: nil, current_recipe: nil)
       result_recipes = Array.new
       recipe_names.flatten.each do |recipe_name|
-        if result = load_recipe(recipe_name, current_cookbook: current_cookbook)
+        if result = load_recipe(recipe_name, current_cookbook: current_cookbook, current_recipe: current_recipe)
           result_recipes << result
         end
       end
@@ -307,7 +307,7 @@ class Chef
     #
     # @see DSL::IncludeRecipe#load_recipe
     #
-    def load_recipe(recipe_name, current_cookbook: nil)
+    def load_recipe(recipe_name, current_cookbook: nil, current_recipe: nil)
       Chef::Log.debug("Loading recipe #{recipe_name} via include_recipe")
 
       cookbook_name, recipe_short_name = Chef::Recipe.parse_recipe_name(recipe_name, current_cookbook: current_cookbook)
@@ -327,7 +327,8 @@ ERROR_MESSAGE
         false
       else
         loaded_recipe(cookbook_name, recipe_short_name)
-        node.loaded_recipe(cookbook_name, recipe_short_name)
+        fully_qualified_current_recipe = "#{current_cookbook}::#{current_recipe}" if current_recipe
+        node.loaded_recipe(cookbook_name, recipe_short_name, current_recipe: fully_qualified_current_recipe)
         cookbook = cookbook_collection[cookbook_name]
         cookbook.load_recipe(recipe_short_name, self)
       end
